@@ -4,4 +4,7 @@
     <string id="201">Veateade on:</string>
     <string id="202">Video aadressi leidmine nurjus</string>
     <string id="203">Programmide nimekirja hankimine nurjus</string>
+    <!-- seaded -->
+    <string id="30002">Üldine</string>
+    <string id="30004">Kõrge kvaliteet (võimalusel)</string>
 </strings>

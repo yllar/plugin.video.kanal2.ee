@@ -32,6 +32,8 @@ import xbmcplugin
 
 import buggalo
 
+__settings__  = xbmcaddon.Addon(id='plugin.video.kanal2.ee')
+
 class Kanal2Exception(Exception):
     pass
 
@@ -140,10 +142,20 @@ class Kanal2Addon(object):
 
     dl = ElementTree.fromstring(videoxml)
     for video in dl.findall("playlist/video"):
-      item = xbmcgui.ListItem(video.findtext('name'), iconImage = ICON, path = video.findtext('videoUrl'))
-      videoUrl = video.findtext('videoUrl')
-      if not videoUrl:
-	raise Kanal2Exception(ADDON.getLocalizedString(202))
+      for host in video.findall('streamItems'):
+        videoHost = host.get('host')
+      for stream in video.findall('streamItems/streamItem'):
+        if __settings__.getSetting('hd') == "true":
+          streamUrl =  stream.get('streamName').replace(' ', '%20').replace('k2lq1','k2hq1')
+        else:
+          streamUrl =  stream.get('streamName').replace(' ', '%20').replace('k2hq1','k2lq1')
+
+        if not streamUrl:
+          raise Kanal2Exception(ADDON.getLocalizedString(202))
+
+      videoUrl = '%s/_definst_/%s' % (videoHost,streamUrl)
+
+      item = xbmcgui.ListItem(video.findtext('name'), iconImage = ICON, path = videoUrl)
       playlist.add(videoUrl,item)
       firstItem = item
     #start = 0

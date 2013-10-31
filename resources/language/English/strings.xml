@@ -4,4 +4,7 @@
     <string id="201">The error message is:</string>
     <string id="202">Unable to find the playback URL</string>
     <string id="203">Unable to retrieve list of programs</string>
+    <!-- settings -->
+    <string id="30002">General</string>
+    <string id="30004">HD quality (if possible)</string>
 </strings>
