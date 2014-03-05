@@ -80,7 +80,7 @@ class Kanal2Addon(object):
     url = "http://kanal2.ee/saated/"
     buggalo.addExtraData('url', url)
     html = self.downloadUrl(url + telecastID)
-    for s in re.finditer('xml:.*=([^"]+)",',html):
+    for s in re.finditer('var am_telecast = ([^;]+);',html):
       return  s.group(1)
 
   # list all episodes
