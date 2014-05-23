@@ -53,7 +53,7 @@ class Kanal2Addon(object):
 
   # list all the shows
   def listPrograms(self):
-    url = "http://kanal2.ee/vaatasaateid"
+    url = "http://kanal2.ee/saated"
     buggalo.addExtraData('url', url)
     html = self.downloadUrl(url)
     
@@ -153,7 +153,7 @@ class Kanal2Addon(object):
         if not streamUrl:
           raise Kanal2Exception(ADDON.getLocalizedString(202))
 
-      videoUrl = '%s/_definst_/%s' % (videoHost,streamUrl)
+      videoUrl = '%s_definst_/%s' % (videoHost,streamUrl)
 
       item = xbmcgui.ListItem(video.findtext('name'), iconImage = ICON, path = videoUrl)
       playlist.add(videoUrl,item)
