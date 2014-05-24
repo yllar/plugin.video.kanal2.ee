@@ -24,6 +24,7 @@ import sys
 import urlparse
 import urllib2
 import re
+import json
 
 import xbmc
 import xbmcgui
@@ -58,20 +59,17 @@ class Kanal2Addon(object):
     html = self.downloadUrl(url)
     
     saated = {}
-    for m in re.finditer('href="vaatasaateid/([^"]+)">([^<]+)</a>', html):
-      if "=" not in m.group(1): #only add if show doesn't have any parameter (duplicate)
-        saated[m.group(1)] = m.group(2)
-    for m in re.finditer('vaatasaateid%2F([^\']+)\'\);">([^<]+)</a>', html):
-      saated[m.group(1)] = m.group(2)
-    for m in re.finditer('vaatasaateid%2F([^\']+)\'\);return false;">([^<]+)</a>', html):
-      saated[m.group(1)] = m.group(2)
+    for m in re.finditer('local:(.*)', html):
+      saated = m.group(1).replace('tokens:', '\"tokens\":')
+    saated = saated[:-1] # remove trailing comma
+    saated = json.loads(saated) # load as JSON
       
     items = list()
-    for key,value in sorted(saated.iteritems()):
-      fanart = self.downloadAndCacheFanart(key, None) # set fetch to None so it would not fetch all the pictures at once
-      item = xbmcgui.ListItem(value, iconImage=fanart) 
+    for s in sorted(saated):
+      fanart = self.downloadAndCacheFanart(s['url'], None) # set fetch to None so it would not fetch all the pictures at once
+      item = xbmcgui.ListItem(s['name'], iconImage=fanart) 
       item.setProperty('Fanart_Image', fanart)
-      items.append((PATH + '?program=%s' % key, item, True))
+      items.append((PATH + '?program=%s' % s['url'], item, True))
     xbmcplugin.addDirectoryItems(HANDLE, items)
     xbmcplugin.endOfDirectory(HANDLE)
 
