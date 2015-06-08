@@ -1,7 +1,7 @@
 # -*- coding:utf-8-*-
 #
-#      Copyright (C) 2012 Yllar Pajus
-#      http://loru.mine.nu
+#      Copyright (C) 2015 Yllar Pajus
+#      http://pilves.eu
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ class Kanal2Addon(object):
         u.close()
         return contents
       except Exception, ex:
-        if retries > 5:
+        if retries >= 4:
           raise Kanal2Exception(ex)
 
   # list all the shows
@@ -151,7 +151,7 @@ class Kanal2Addon(object):
         if not streamUrl:
           raise Kanal2Exception(ADDON.getLocalizedString(202))
 
-      videoUrl = '%s_definst_/%s' % (videoHost,streamUrl)
+      videoUrl = '%s playpath=%s' % (videoHost,streamUrl)
 
       item = xbmcgui.ListItem(video.findtext('name'), iconImage = ICON, path = videoUrl)
       playlist.add(videoUrl,item)
@@ -207,7 +207,7 @@ if __name__ == '__main__':
   if not os.path.exists(CACHE_PATH):
     os.makedirs(CACHE_PATH)
 
-  buggalo.SUBMIT_URL = 'http://loru.mine.nu/exception/submit.php'
+  buggalo.SUBMIT_URL = 'https://pilves.eu/exception/submit.php'
   kanal2Addon = Kanal2Addon()
   try:
     if PARAMS.has_key('program'):
