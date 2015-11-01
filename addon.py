@@ -67,10 +67,11 @@ class Kanal2Addon(object):
       
     items = list()
     for s in sorted(saated):
-      fanart = self.downloadAndCacheFanart(s['url'], None) # set fetch to None so it would not fetch all the pictures at once
-      item = xbmcgui.ListItem(s['name'], iconImage=fanart) 
-      item.setProperty('Fanart_Image', fanart)
-      items.append((PATH + '?program=%s' % s['url'], item, True))
+      if s['group_url'] == 'saated':
+        fanart = self.downloadAndCacheFanart(s['url'], None) # set fetch to None so it would not fetch all the pictures at once
+        item = xbmcgui.ListItem(s['name'], iconImage=fanart) 
+        item.setProperty('Fanart_Image', fanart)
+        items.append((PATH + '?program=%s' % s['url'], item, True))
     xbmcplugin.addDirectoryItems(HANDLE, items)
     xbmcplugin.endOfDirectory(HANDLE)
 
