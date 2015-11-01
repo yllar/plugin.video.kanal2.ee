@@ -62,6 +62,7 @@ class Kanal2Addon(object):
     for m in re.finditer('local:(.*)', html):
       saated = m.group(1).replace('tokens:', '\"tokens\":')
     saated = saated[:-1] # remove trailing comma
+    saated = saated.replace("\\'", "'") # replace invalid escapes
     saated = json.loads(saated) # load as JSON
       
     items = list()
