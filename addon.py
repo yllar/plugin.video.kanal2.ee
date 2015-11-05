@@ -54,7 +54,7 @@ class Kanal2Addon(object):
 
   # list all the shows
   def listPrograms(self):
-    url = "http://kanal2.ee/saated"
+    url = "http://kanal2.ee/pluss/shows?tab=arhiiv"
     buggalo.addExtraData('url', url)
     html = self.downloadUrl(url)
     
@@ -67,11 +67,10 @@ class Kanal2Addon(object):
       
     items = list()
     for s in sorted(saated):
-      if s['group_url'] == 'saated':
-        fanart = self.downloadAndCacheFanart(s['url'], None) # set fetch to None so it would not fetch all the pictures at once
-        item = xbmcgui.ListItem(s['name'], iconImage=fanart) 
-        item.setProperty('Fanart_Image', fanart)
-        items.append((PATH + '?program=%s' % s['url'], item, True))
+      fanart = self.downloadAndCacheFanart(s['url'], None) # set fetch to None so it would not fetch all the pictures at once
+      item = xbmcgui.ListItem(s['name'], iconImage=fanart) 
+      item.setProperty('Fanart_Image', fanart)
+      items.append((PATH + '?program=%s' % s['url'], item, True))
     xbmcplugin.addDirectoryItems(HANDLE, items)
     xbmcplugin.endOfDirectory(HANDLE)
 
